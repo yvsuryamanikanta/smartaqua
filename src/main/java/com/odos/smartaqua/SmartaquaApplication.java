@@ -9,5 +9,4 @@ public class SmartaquaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SmartaquaApplication.class, args);
 	}
-
 }
