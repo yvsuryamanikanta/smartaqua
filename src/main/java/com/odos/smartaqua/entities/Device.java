@@ -1,15 +1,21 @@
 package com.odos.smartaqua.entities;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,30 +23,31 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Version {
+public class Device {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
-	public Long versionid;
+	private Long deviceid;
+
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "device", cascade = CascadeType.MERGE)
+	public Set<User> user;
+
+	@Column(nullable = true)
+	private String devicename;
 
 	@Column(nullable = false)
-	public String versionname;
+	private String deviceversion;
+
+	@Column(nullable = false, unique = true)
+	private String uniqueID;
+
+	@Column(nullable = false, updatable = true, unique = true)
+	private String notificationid;
 
 	@Column(nullable = false)
-	public int versioncode;
-
-	@Column(nullable = false)
-	public String sourcetype;
-
-	@Column(nullable = false)
-	public String updatepath;
-
-	@Column(nullable = false)
-	public String updatemessage;
-
-	@Column(nullable = false)
-	public Boolean ismandatory;
+	private String devicetype;
 
 	@CreationTimestamp
 	private Date createddate;
@@ -49,7 +56,6 @@ public class Version {
 	private Date modifieddate;
 
 	@Column(columnDefinition = "boolean default true")
-	public Boolean isactive = true;
+	private Boolean isactive = true;
 
-	
 }

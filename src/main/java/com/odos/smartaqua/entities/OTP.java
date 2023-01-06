@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,30 +18,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Version {
+@Table(name = "otp")
+public class OTP {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
-	public Long versionid;
+	public Long otpid;
 
-	@Column(nullable = false)
-	public String versionname;
+	@Column(nullable = false, updatable = true)
+	public String usernumber;
 
-	@Column(nullable = false)
-	public int versioncode;
+	@Column(nullable = false, updatable = true)
+	public String otpcode;
 
-	@Column(nullable = false)
-	public String sourcetype;
-
-	@Column(nullable = false)
-	public String updatepath;
-
-	@Column(nullable = false)
-	public String updatemessage;
-
-	@Column(nullable = false)
-	public Boolean ismandatory;
+	@Column(nullable = false, updatable = true)
+	public int daycount;
 
 	@CreationTimestamp
 	private Date createddate;
@@ -51,5 +44,4 @@ public class Version {
 	@Column(columnDefinition = "boolean default true")
 	public Boolean isactive = true;
 
-	
 }

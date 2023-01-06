@@ -3,6 +3,7 @@ package com.odos.smartaqua.utils;
 public class AquaConstants {
 
 	// response strings
+	public static String EMPTY = "";
 	public static String success = "Sucess";
 	public static String saved = "saved successfully";
 	public static String updated = "updated successfully";

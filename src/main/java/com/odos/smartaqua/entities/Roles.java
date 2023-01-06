@@ -1,15 +1,21 @@
 package com.odos.smartaqua.entities;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,30 +23,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Version {
+public class Roles {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
-	public Long versionid;
+	public Long roleid;
 
-	@Column(nullable = false)
-	public String versionname;
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "roles", cascade = CascadeType.MERGE)
+	public Set<User> user;
 
-	@Column(nullable = false)
-	public int versioncode;
+	@Column(nullable = true, updatable = true, unique = true)
+	public String rolename;
 
-	@Column(nullable = false)
-	public String sourcetype;
+	@Column(nullable = true, updatable = true, unique = true)
+	public String rolecode;
 
-	@Column(nullable = false)
-	public String updatepath;
-
-	@Column(nullable = false)
-	public String updatemessage;
-
-	@Column(nullable = false)
-	public Boolean ismandatory;
+	@Column(nullable = false, updatable = true)
+	public String cretaedby;
 
 	@CreationTimestamp
 	private Date createddate;
@@ -51,5 +52,5 @@ public class Version {
 	@Column(columnDefinition = "boolean default true")
 	public Boolean isactive = true;
 
-	
+
 }

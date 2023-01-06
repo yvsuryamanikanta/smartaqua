@@ -48,7 +48,7 @@ public class VersionServiceImpl implements VersionService {
 			Version version = versionRepository.findByIsActive(value);
 			if (version != null) {
 				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, version,
-						AquaConstants.success);
+						AquaConstants.EMPTY);
 			} else {
 				responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.BADREQUEST,
 						AquaConstants.failed, AquaConstants.failed);
