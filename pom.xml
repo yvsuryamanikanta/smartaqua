@@ -12,7 +12,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.example</groupId>
+	<groupId>com.odos</groupId>
 
 	<artifactId>smartaqua</artifactId>
 
@@ -23,7 +23,7 @@
 	<description>smartaqua project for Spring Boot</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
