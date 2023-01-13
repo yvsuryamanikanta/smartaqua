@@ -28,7 +28,7 @@ import lombok.Setter;
 public class Culture {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
 	public Long cultureid;
 
