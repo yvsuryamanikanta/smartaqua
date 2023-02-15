@@ -28,9 +28,9 @@ public class AquaConstants {
 	public static String senderid = "&senderid=";
 	//public static String url = "https://www.way2sms.com/api/v1/sendCampaign?";
 	public static String url = "https://www.sms4india.com/api/v1/sendCampaign?";
-	public static String otpMessage = "is your one time password to proceed on smartaqua.co.in it is valid for next 10 miniutes.";
+	public static String otpMessage = " is your Smart Aqua verification code. from ourdreamonlineservices";
 	public static String AK_VALUE = "NACI1HA60HV6A239C0TX5P423MRRSTU0";
 	public static String SECRET_VALUE = "HRRMTS939N5QUFWL";
-	public static String SENDER_ID = "StAqua";
+	public static String SENDER_ID = "ODOSPL";
 	public static String STAGE = "prod";
 }

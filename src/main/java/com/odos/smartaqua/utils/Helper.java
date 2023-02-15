@@ -21,8 +21,8 @@ public class Helper {
 			String senderId = AquaConstants.senderid + URLEncoder.encode(senderValue, AquaConstants.utf);
 			//URL obj = new URL(AquaConstants.url + token + secret + usetype + mobile + messageText + senderId);
 			URL obj = new URL("https://www.smsstriker.com/API/sms.php?username=suryaa&password=Surya@7891"
-					+ "&from=StAqua&to="+mobilenumber+"&msg="+URLEncoder.encode(rndNumber + message, AquaConstants.utf)
-					+"&type=1&template_id=7891");
+					+ "&from=ODOSPL&to="+mobilenumber+"&msg="+URLEncoder.encode(rndNumber + message, AquaConstants.utf)
+					+"&type=1&template_id=1707165837782002698");
 			HttpURLConnection httpConnection = (HttpURLConnection) obj.openConnection();
 			httpConnection.setDoOutput(true);
 			BufferedReader bufferedReader = null;
