@@ -182,4 +182,32 @@ public class UserServiceImpl implements UserService {
 				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
+	@Override
+	public ResponseEntity<ResponseDTO> updatePassword(UserDTO userdto) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		try {
+			User userDetails = userRepository.findUserByNumber(userdto.getUsernumber());
+			if (userDetails != null) {
+				userRepository.updatePassword(userdto.getUsernumber(), userdto.getPassword());
+				UserDTO returnDto = new UserDTO();
+				BeanUtils.copyProperties(userDetails, returnDto);
+				returnDto.setRoleid(userDetails.getRoles().getRoleid());
+				returnDto.setUniqueid(userDetails.getDevice().getUniqueID());
+				returnDto.setNotificationid(userDetails.getDevice().getNotificationid());
+				returnDto.setRolecode(userDetails.getRoles().getRolecode());
+				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, returnDto,
+						AquaConstants.EMPTY);
+			} else {
+				responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
+						AquaConstants.invalidcredentials, AquaConstants.invalidcredentials);
+			}
+
+		} catch (Exception e) {
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
+					AquaConstants.failed, AquaConstants.failed);
+		}
+		return new ResponseEntity<ResponseDTO>(responseDTO,
+				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+	}
+
 }

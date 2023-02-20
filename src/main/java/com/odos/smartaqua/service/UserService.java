@@ -13,5 +13,7 @@ public interface UserService {
 	ResponseEntity<ResponseDTO> getFeedBoysList(Long roleid, String createdby);
 
 	ResponseEntity<ResponseDTO> authenticateUser(UserDTO userdto);
+	
+	ResponseEntity<ResponseDTO> updatePassword(UserDTO userdto);
 
 }

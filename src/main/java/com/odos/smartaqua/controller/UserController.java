@@ -35,5 +35,10 @@ public class UserController {
 	public ResponseEntity<ResponseDTO> authenticateUser(@RequestBody UserDTO userdto) {
 		return userService.authenticateUser(userdto);
 	}
+	
+	@PostMapping(value = "/updatePassword")
+	public ResponseEntity<ResponseDTO> updatePassword(@RequestBody UserDTO userdto) {
+		return userService.updatePassword(userdto);
+	}
 
 }
