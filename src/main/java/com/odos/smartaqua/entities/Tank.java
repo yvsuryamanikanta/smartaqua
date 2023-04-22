@@ -46,12 +46,24 @@ public class Tank {
 
 	@Column(nullable = false, updatable = true)
 	public String tankname;
+	
+	@Column(nullable = false, updatable = true)
+	public String tankSize;
+	
+	@Column(nullable = false, updatable = true)
+	public String tankSizeType;
 
 	@Column(nullable = true, updatable = true)
 	public String tanklocation;
 
 	@Column(nullable = true, updatable = true)
 	public String tankimage;
+	
+	@Column(nullable = true, updatable = true)
+	public String latitude;
+	
+	@Column(nullable = true, updatable = true)
+	public String longitude;
 
 	@CreationTimestamp
 	private Date createddate;

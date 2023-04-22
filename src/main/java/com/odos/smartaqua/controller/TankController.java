@@ -12,7 +12,6 @@ import com.odos.smartaqua.dto.ResponseDTO;
 import com.odos.smartaqua.dto.TankDTO;
 import com.odos.smartaqua.service.TankService;
 
-
 @RequestMapping(value = "/api/tank")
 @RestController
 public class TankController {
@@ -21,13 +20,18 @@ public class TankController {
 	private TankService tankService;
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseEntity<ResponseDTO> resendOTP(@RequestBody TankDTO tankdto) {
+	public ResponseEntity<ResponseDTO> saveTank(@RequestBody TankDTO tankdto) {
 		return tankService.save(tankdto);
 	}
 
 	@RequestMapping(value = "/list/{userid}", method = RequestMethod.GET)
-	public ResponseEntity<ResponseDTO> verifyOTP(@PathVariable("userid") String userid) {
+	public ResponseEntity<ResponseDTO> tankByUser(@PathVariable("userid") String userid) {
 		return tankService.findTankByUser(userid);
+	}
+
+	@RequestMapping(value = "/info/{tankid}", method = RequestMethod.GET)
+	public ResponseEntity<ResponseDTO> tankInfo(@PathVariable("tankid") String tankid) {
+		return tankService.findTankInfo(tankid);
 	}
 
 }

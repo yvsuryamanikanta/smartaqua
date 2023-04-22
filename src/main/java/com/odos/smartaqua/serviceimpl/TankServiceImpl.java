@@ -9,9 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.odos.smartaqua.dto.PreparationDTO;
 import com.odos.smartaqua.dto.ResponseDTO;
+import com.odos.smartaqua.dto.StockingDTO;
 import com.odos.smartaqua.dto.TankDTO;
+import com.odos.smartaqua.dto.TankInfoDTO;
+import com.odos.smartaqua.entities.Preparation;
+import com.odos.smartaqua.entities.Stocking;
 import com.odos.smartaqua.entities.Tank;
+import com.odos.smartaqua.repository.PreparationRepository;
+import com.odos.smartaqua.repository.StockingRepository;
 import com.odos.smartaqua.repository.TankRepository;
 import com.odos.smartaqua.repository.UserRepository;
 import com.odos.smartaqua.service.TankService;
@@ -27,6 +34,12 @@ public class TankServiceImpl implements TankService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private PreparationRepository preparationRepository;
+
+	@Autowired
+	private StockingRepository stockingRepository;
+
 	/*
 	 * ----------------SAVE TANK --------------------
 	 */
@@ -34,7 +47,7 @@ public class TankServiceImpl implements TankService {
 	public ResponseEntity<ResponseDTO> save(TankDTO tankdto) {
 		ResponseDTO responseDTO = new ResponseDTO();
 
-		String tankname = tankRepository.findTankByName(tankdto.getTankname(),tankdto.getUserid().toString());
+		String tankname = tankRepository.findTankByName(tankdto.getTankname(), tankdto.getUserid().toString());
 		if (tankname != null) {
 			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
 					AquaConstants.alreadytank);
@@ -44,8 +57,8 @@ public class TankServiceImpl implements TankService {
 			tank.setUser(userRepository.findById(tankdto.getUserid()).get());
 			try {
 				tankRepository.save(tank);
-				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED,
-						AquaConstants.success, AquaConstants.success);
+				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, AquaConstants.success,
+						AquaConstants.success);
 			} catch (Exception e) {
 				responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
 						AquaConstants.failed);
@@ -80,8 +93,56 @@ public class TankServiceImpl implements TankService {
 					AquaConstants.failed);
 		}
 
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+	}
+
+	/*
+	 * ----------------TANK INFO BY TANK ID--------------------
+	 */
+	@Override
+	public ResponseEntity<ResponseDTO> findTankInfo(String tankid) {
+
+		ResponseDTO responseDTO = new ResponseDTO();
+		try {
+			List<Tank> tankList = tankRepository.findTankByTankId(tankid);
+			Tank tank = (Tank) tankList.get(0);
+			List<StockingDTO> stockingDtoList = new ArrayList<>();
+			List<Stocking> stockingList = stockingRepository.getStocking(tankid);
+			List<PreparationDTO> preparationDtoList = new ArrayList<>();
+			List<Preparation> preparationList = preparationRepository.pondPreparation(tankid);
+			if (stockingList != null) {
+				for (int i = 0; i < stockingList.size(); i++) {
+					stockingDtoList = new ArrayList<>();
+					Stocking stocking = (Stocking) stockingList.get(i);
+					StockingDTO stockingDTO = new StockingDTO();
+					BeanUtils.copyProperties(stocking, stockingDTO);
+					stockingDTO.setTankid(stocking.getTank().getTankid());
+					stockingDtoList.add(stockingDTO);
+				}
+			}
+
+			if (preparationList != null) {
+				for (int i = 0; i < preparationList.size(); i++) {
+					preparationDtoList = new ArrayList<>();
+					Preparation preparation = (Preparation) preparationList.get(i);
+					PreparationDTO preparationDTO = new PreparationDTO();
+					BeanUtils.copyProperties(preparation, preparationDTO);
+					preparationDTO.setTankid(preparation.getTank().getTankid());
+					preparationDtoList.add(preparationDTO);
+				}
+			}
+			TankInfoDTO tankInfoDTO = new TankInfoDTO(tankid, tank.getTankname(), tank.getTanklocation(),
+					tank.getTankimage(), tank.getTankSize(), tank.getTankSizeType(), tank.getLatitude(),
+					tank.getLongitude(), preparationDtoList,stockingDtoList);
+
+			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, tankInfoDTO,
+					AquaConstants.success);
+		} catch (Exception e) {
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+					AquaConstants.failed);
+		}
+
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	};
 
 }

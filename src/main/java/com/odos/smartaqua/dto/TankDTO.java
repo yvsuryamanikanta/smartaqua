@@ -13,6 +13,14 @@ public class TankDTO {
 
 	public String tankname;
 
+	public String tankSize;
+
+	public String tankSizeType;
+
+	public String latitude;
+
+	public String longitude;
+
 	public String tanklocation;
 
 	public String tankimage;

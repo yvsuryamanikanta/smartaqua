@@ -15,5 +15,8 @@ public interface TankRepository extends JpaRepository<Tank, Long> {
 
 	@Query(nativeQuery = true, value = "select * from tank where userid =:userid")
 	List<Tank> findTankByUser(@Param("userid") String userid);
+	
+	@Query(nativeQuery = true, value = "select * from tank where tankid =:tankid")
+	List<Tank> findTankByTankId(@Param("tankid") String tankid);
 
 }
