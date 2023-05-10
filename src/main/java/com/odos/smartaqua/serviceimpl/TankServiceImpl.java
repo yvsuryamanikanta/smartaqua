@@ -111,8 +111,8 @@ public class TankServiceImpl implements TankService {
 			List<PreparationDTO> preparationDtoList = new ArrayList<>();
 			List<Preparation> preparationList = preparationRepository.pondPreparation(tankid);
 			if (stockingList != null) {
+				stockingDtoList = new ArrayList<>();
 				for (int i = 0; i < stockingList.size(); i++) {
-					stockingDtoList = new ArrayList<>();
 					Stocking stocking = (Stocking) stockingList.get(i);
 					StockingDTO stockingDTO = new StockingDTO();
 					BeanUtils.copyProperties(stocking, stockingDTO);
@@ -122,8 +122,8 @@ public class TankServiceImpl implements TankService {
 			}
 
 			if (preparationList != null) {
+				preparationDtoList = new ArrayList<>();
 				for (int i = 0; i < preparationList.size(); i++) {
-					preparationDtoList = new ArrayList<>();
 					Preparation preparation = (Preparation) preparationList.get(i);
 					PreparationDTO preparationDTO = new PreparationDTO();
 					BeanUtils.copyProperties(preparation, preparationDTO);
