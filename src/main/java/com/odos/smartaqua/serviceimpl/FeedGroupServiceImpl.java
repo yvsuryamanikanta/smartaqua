@@ -245,12 +245,18 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 	 * FEED GROUPS
 	 */
 
-	public ResponseEntity<ResponseDTO> feedList(Long userid,Long cultureId,String FeedDate) {
+	public ResponseEntity<ResponseDTO> feedList(Long userid,Long cultureId,String feedDate) {
 		ResponseDTO responseDTO = new ResponseDTO();
 
 		try {
-			List<FeedGroupResDTO> templatedtolist = new ArrayList<FeedGroupResDTO>();
-			List<FeedGroup> feedGroupsList = feedGroupRepository.findGroupsByCultureFeeddate(userid,cultureId,FeedDate);
+			List<FeedGroupResDTO> templatedtolist = new ArrayList<>();
+			List<FeedGroup> feedGroupsList;
+			if(feedDate.equalsIgnoreCase("0")) {
+				feedGroupsList = feedGroupRepository.findGroupByCultureId(userid,cultureId);
+			}else {
+				feedGroupsList = feedGroupRepository.findGroupsByCultureFeeddate(userid,cultureId,feedDate);
+			}
+			
 			List<FeedTemplateResponseDTO> feedProductsList;
 			List<FeedTemplateResponseDTO> supplimentsList;
 

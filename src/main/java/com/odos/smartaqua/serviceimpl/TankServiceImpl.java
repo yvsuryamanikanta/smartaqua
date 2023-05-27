@@ -14,9 +14,11 @@ import com.odos.smartaqua.dto.ResponseDTO;
 import com.odos.smartaqua.dto.StockingDTO;
 import com.odos.smartaqua.dto.TankDTO;
 import com.odos.smartaqua.dto.TankInfoDTO;
+import com.odos.smartaqua.dto.UserDTO;
 import com.odos.smartaqua.entities.Preparation;
 import com.odos.smartaqua.entities.Stocking;
 import com.odos.smartaqua.entities.Tank;
+import com.odos.smartaqua.entities.User;
 import com.odos.smartaqua.repository.PreparationRepository;
 import com.odos.smartaqua.repository.StockingRepository;
 import com.odos.smartaqua.repository.TankRepository;
@@ -143,6 +145,31 @@ public class TankServiceImpl implements TankService {
 		}
 
 		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
-	};
+	}
+
+	@Override
+	public ResponseEntity<ResponseDTO> update(TankDTO tankdto) {
+		ResponseDTO responseDTO = new ResponseDTO();
+
+		List<Tank> tankList = tankRepository.findTankByTankId(""+tankdto.getTankid());
+		if (tankList.size() !=0) {
+			Tank tank = new Tank();
+			BeanUtils.copyProperties(tankdto, tank);
+			tank.setUser(userRepository.findById(tankdto.getUserid()).get());
+			try {
+				tankRepository.save(tank);
+				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, AquaConstants.success,
+						AquaConstants.success);
+			} catch (Exception e) {
+				responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+						AquaConstants.failed);
+			}
+		} else {
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+					"No Pond registered");
+		}
+		return new ResponseEntity<ResponseDTO>(responseDTO,
+				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+	}
 
 }

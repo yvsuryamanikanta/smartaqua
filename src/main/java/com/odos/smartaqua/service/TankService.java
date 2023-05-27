@@ -11,6 +11,8 @@ public interface TankService {
 
 	ResponseEntity<ResponseDTO> findTankByUser(String userid);
 
-	ResponseEntity<ResponseDTO> findTankInfo(String tankidl̥);
+	ResponseEntity<ResponseDTO> findTankInfo(String tankId);
+	
+	ResponseEntity<ResponseDTO> update(TankDTO tankdto);
 
 }
