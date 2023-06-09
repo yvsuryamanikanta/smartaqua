@@ -31,6 +31,8 @@ public class StockDTO {
 
 	public String mrp;
 	
+	public String path;
+	
 	public String createddate;
 	
 	public String productcode;

@@ -19,10 +19,10 @@ public interface CultureRepository extends JpaRepository<Culture, Long> {
 	@Query(nativeQuery = true, value = "select culturenumber from culture where userid =:userid and tankid =:tankid order by cultureid DESC limit 1")
 	String findCultureNumber(@Param("userid") Long userid, @Param("tankid") Long tankid);
 
-	@Query(nativeQuery = true, value = "select * from culture where userid =:userid")
+	@Query(nativeQuery = true, value = "select * from culture where userid =:userid order by tankname ASC")
 	List<Culture> findAllCultures(@Param("userid") Long userid);
 
-	@Query(nativeQuery = true, value = "select * from culture where cultureaccess =:cultureaccess")
+	@Query(nativeQuery = true, value = "select * from culture where cultureaccess =:cultureaccess order by tankname ASC")
 	List<Culture> findCultureByAccess(@Param("cultureaccess") String cultureaccess);
 
 	@Transactional

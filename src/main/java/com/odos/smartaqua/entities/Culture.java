@@ -44,79 +44,8 @@ public class Culture {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade = CascadeType.MERGE)
 	public Set<FeedGroup> feedgroup;
 
-	/*
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<ChecktrayTemplate> checktraytemplate;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<LabTemplate> labtemplate;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<ChecktrayGroup> checktraygroup;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<LabGroup> labgroup;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<FeedGroup> feedgroup;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<Treatment> treatment;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<Harvesting> harvesting;
-	 */
-
-	/*
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<Checktray> checktray;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<TrayConverse> trayconverse;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<WorkConverse> workconverse;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<LabConverse> labconverse;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<GrowthConverse> growthconverse;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<HarvestGroup> harvestgroup;
-	 * 
-	 * @JsonIgnore
-	 * 
-	 * @OneToMany(fetch = FetchType.LAZY, mappedBy = "culture", cascade =
-	 * CascadeType.MERGE) public Set<Expends> expends;
-	 */
+	@Column(nullable = false, updatable = true)
+	public String tankname;
 
 	@Column(nullable = false, updatable = true)
 	public String culturename;

@@ -69,6 +69,13 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 			BeanUtils.copyProperties(feedGroupDTO, feedgroup);
 			feedgroup.setUser(userRepository.findById(feedGroupDTO.getUserID()).get());
 			feedgroup.setCulture(cultureRepository.findById(feedGroupDTO.getCultureid()).get());
+			String groupname = feedGroupRepository.findGroupByDate(feedGroupDTO.getFeeddate(), feedGroupDTO.getUserID(),feedGroupDTO.getCultureid());
+			if(groupname !=null) {
+				int count = Integer.parseInt(groupname) + 1;
+				feedgroup.setGroupname(""+count);
+			}else {
+				feedgroup.setGroupname("1");
+			}
 			FeedGroup feedgroupData = feedGroupRepository.save(feedgroup);
 			Long uID = feedGroupDTO.getUserID();
 			Long feedGroupID = feedgroupData.getFeedgroupid();
@@ -107,7 +114,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 			FeedGroupDTO returnfeedgroup = new FeedGroupDTO(feedgroupData.getFeedgroupid(), null,
 					feedgroupData.getUser().getUserid(), feedgroupData.getCulture().getCultureid(),
 					feedgroupData.getAccess(), feedgroupData.getGroupname(), feedgroupData.getFeeddate(),
-					feedgroupData.getComment(), null, null);
+					feedgroupData.getFeeddateandtime(),feedgroupData.getComment(), null, null);
 			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, returnfeedgroup,
 					AquaConstants.success);
 

@@ -56,6 +56,9 @@ public class FeedGroup {
 	public String feeddate;
 	
 	@Column(nullable = false, updatable = true)
+	public String feeddateandtime;
+	
+	@Column(nullable = false, updatable = true)
 	public String comment;
 
 	@Column(nullable = true, updatable = true)

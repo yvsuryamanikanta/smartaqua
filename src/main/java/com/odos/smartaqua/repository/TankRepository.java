@@ -2,10 +2,7 @@ package com.odos.smartaqua.repository;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,7 +13,7 @@ public interface TankRepository extends JpaRepository<Tank, Long> {
 	@Query(nativeQuery = true, value = "select tankname from tank where tankname =:tankname and userid =:userid")
 	String findTankByName(@Param("tankname") String tankname, @Param("userid") String userid);
 
-	@Query(nativeQuery = true, value = "select * from tank where userid =:userid")
+	@Query(nativeQuery = true, value = "select * from tank where userid =:userid order by tankname ASC")
 	List<Tank> findTankByUser(@Param("userid") String userid);
 	
 	@Query(nativeQuery = true, value = "select * from tank where tankid =:tankid")

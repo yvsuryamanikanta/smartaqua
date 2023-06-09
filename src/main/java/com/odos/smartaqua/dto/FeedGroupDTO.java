@@ -27,6 +27,8 @@ public class FeedGroupDTO {
 	
 	private String feeddate;
 	
+	private String feeddateandtime;
+	
 	private String comment;
 
 	private List<FeedTemplateDTO> feedProducts;

@@ -10,8 +10,8 @@ import com.odos.smartaqua.entities.FeedGroup;
 
 public interface FeedGroupRepository extends JpaRepository<FeedGroup, Long> {
 
-	@Query(nativeQuery = true, value = "select groupname from feedgroup where groupname =:groupname")
-	String findGroupByName(@Param("groupname") String groupname);
+	@Query(nativeQuery = true, value = "select groupname from feedgroup where feeddate =:feeddate and userid =:userid and cultureid =:cultureid ORDER BY groupname DESC LIMIT 1")
+	String findGroupByDate(@Param("feeddate") String feeddate, @Param("userid") Long userid,@Param("cultureid") Long cultureid);
 	
 	@Query(nativeQuery = true, value = "select * from feedgroup where userid =:userid")
 	List<FeedGroup> findGroupsByUID(@Param("userid") Long userid);

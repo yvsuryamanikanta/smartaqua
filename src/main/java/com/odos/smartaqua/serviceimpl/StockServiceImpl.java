@@ -96,7 +96,7 @@ public class StockServiceImpl implements StockService {
 						stock.getProduct().getProductname(),
 						stock.getProduct().getProductcategory().getProductcatgeoryid(),
 						stock.getQuantitycategories().getQuantitycategoryid(), stock.getNewstock(), stock.getOldstock(),
-						stock.getAvailablestock(), stock.getMrp(), "" + stock.getCreateddate(),
+						stock.getAvailablestock(), stock.getMrp(), stock.getPath(), "" + stock.getCreateddate(),
 						stock.getProduct().getProductcategory().getCode(),
 						stock.getQuantitycategories().getQtycategorycode());
 				stockDtoList.add(stockdto);
@@ -126,7 +126,7 @@ public class StockServiceImpl implements StockService {
 						stock.getProduct().getProductname(),
 						stock.getProduct().getProductcategory().getProductcatgeoryid(),
 						stock.getQuantitycategories().getQuantitycategoryid(), stock.getNewstock(), stock.getOldstock(),
-						stock.getAvailablestock(), stock.getMrp(), "" + stock.getCreateddate(),
+						stock.getAvailablestock(), stock.getMrp(), stock.getPath(), "" + stock.getCreateddate(),
 						stock.getProduct().getProductcategory().getCode(),
 						stock.getQuantitycategories().getQtycategorycode());
 				stockDtoList.add(stockdto);
@@ -155,7 +155,7 @@ public class StockServiceImpl implements StockService {
 						stock.getProduct().getProductname(),
 						stock.getProduct().getProductcategory().getProductcatgeoryid(),
 						stock.getQuantitycategories().getQuantitycategoryid(), stock.getNewstock(), stock.getOldstock(),
-						stock.getAvailablestock(), stock.getMrp(), "" + stock.getCreateddate(),
+						stock.getAvailablestock(), stock.getMrp(), stock.getPath(), "" + stock.getCreateddate(),
 						stock.getProduct().getProductcategory().getCode(),
 						stock.getQuantitycategories().getQtycategorycode());
 				stockDtoList.add(stockdto);

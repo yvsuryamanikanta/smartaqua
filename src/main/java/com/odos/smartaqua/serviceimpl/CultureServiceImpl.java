@@ -53,6 +53,7 @@ public class CultureServiceImpl implements CultureService {
 			culture.setUser(userRepository.findById(culturedto.getUserid()).get());
 			culture.setTank(tankRepository.findById(culturedto.getTankid()).get());
 			culture.setCulturenumber(cultureCount);
+			culture.setTankname(tankRepository.findById(culturedto.getTankid()).get().getTankname());
 			try {
 				cultureRepository.save(culture);
 				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, AquaConstants.saved,

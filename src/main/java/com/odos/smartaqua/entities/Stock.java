@@ -52,6 +52,9 @@ public class Stock {
 
 	@Column(nullable = false, updatable = true, unique = false)
 	public String mrp;
+	
+	@Column(nullable = false, updatable = true, unique = false)
+	public String path;
 
 	@CreationTimestamp
 	private Date createddate;
