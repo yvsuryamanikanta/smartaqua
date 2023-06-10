@@ -28,4 +28,9 @@ public class GrowthController {
 	public ResponseEntity<ResponseDTO> getCultureByTank(@PathVariable("tankid") Long tankid) {
 		return growthObservationService.findGrowthByTankId(tankid);
 	}
+	
+	@RequestMapping(value = "/list", method = RequestMethod.POST)
+	public ResponseEntity<ResponseDTO> getGrowthByGrowthDate(@RequestBody GrowthObservationDTO growthObservationDTO) {
+		return growthObservationService.findGrowthByDateAndTank(growthObservationDTO.getTankid(),growthObservationDTO.getGrowthobservationdate());
+	}
 }

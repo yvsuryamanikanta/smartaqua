@@ -10,5 +10,9 @@ public interface GrowthObservationService {
 	ResponseEntity<ResponseDTO> saveGrowthObservation(GrowthObservationDTO growthObservationDTO);
 
 	ResponseEntity<ResponseDTO> findGrowthByTankId(Long id);
+	
+	ResponseEntity<ResponseDTO> findGrowthByDateAndTank(Long id,String growthobservationdate);
+	
+	
 
 }

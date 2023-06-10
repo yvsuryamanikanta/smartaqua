@@ -10,7 +10,10 @@ import com.odos.smartaqua.entities.GrowthObservation;
 
 public interface GrowthRepository extends JpaRepository<GrowthObservation, Long> {
 	
-	@Query(nativeQuery = true, value = "select * from growthobservation where tankid =:tankid")
+	@Query(nativeQuery = true, value = "select * from growth_observation where tankid =:tankid")
 	List<GrowthObservation> findGrowthList(@Param("tankid") Long tankid);
+	
+	@Query(nativeQuery = true, value = "select * from growth_observation where tankid =:tankid and growthobservationdate =:growthobservationdate")
+	List<GrowthObservation> findGrowthListByDate(@Param("tankid") Long tankid, @Param("growthobservationdate") String growthobservationdate);
 
 }

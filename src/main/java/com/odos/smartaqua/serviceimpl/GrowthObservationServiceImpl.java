@@ -28,7 +28,7 @@ public class GrowthObservationServiceImpl implements GrowthObservationService {
 	private TankRepository tankRepository;
 
 	/*
-	 * -----------------SAVE CHECKTRAY -------------
+	 * -----------------SAVE GROWTH -------------
 	 */
 	public ResponseEntity<ResponseDTO> saveGrowthObservation(GrowthObservationDTO growthObservationDTO) {
 		ResponseDTO responseDTO = new ResponseDTO();
@@ -40,23 +40,23 @@ public class GrowthObservationServiceImpl implements GrowthObservationService {
 			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, AquaConstants.saved,
 					AquaConstants.success);
 		} catch (Exception e) {
-			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.INTERNALERROR, "Failed",
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.INTERNALERROR, AquaConstants.failed,
 					AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
+		return new ResponseEntity<>(responseDTO,
 				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
 	/*
-	 * -----------------GET CHECKTRAY LIST BY TANKID -------------
+	 * -----------------GET GROWTH LIST BY TANKID -------------
 	 */
 	public ResponseEntity<ResponseDTO> findGrowthByTankId(Long id) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		try {
-			List<GrowthObservationDTO> growthObservationDTOsList = new ArrayList<GrowthObservationDTO>();
-			List<GrowthObservation> GrowthObservationList = growthRepository.findGrowthList(id);
-			for (int i = 0; i < GrowthObservationList.size(); i++) {
-				GrowthObservation growthObservation = (GrowthObservation) GrowthObservationList.get(i);
+			List<GrowthObservationDTO> growthObservationDTOsList = new ArrayList<>();
+			List<GrowthObservation> growthObservationList = growthRepository.findGrowthList(id);
+			for (int i = 0; i < growthObservationList.size(); i++) {
+				GrowthObservation growthObservation = (GrowthObservation) growthObservationList.get(i);
 				GrowthObservationDTO growthObservationDTO = new GrowthObservationDTO(
 						growthObservation.getGrowthobsvid(), growthObservation.getTank().getTankid(),
 						growthObservation.getCount(), growthObservation.getGrowthobservationdate(),
@@ -69,7 +69,34 @@ public class GrowthObservationServiceImpl implements GrowthObservationService {
 			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.INTERNALERROR, "Failed",
 					AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
+		return new ResponseEntity<>(responseDTO,
+				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+	}
+
+	
+	/*
+	 * -----------------GET GROWTH LIST BY TANK and GROWTH DATE -------------
+	 */
+	public ResponseEntity<ResponseDTO> findGrowthByDateAndTank(Long id,String growthobservationdate) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		try {
+			List<GrowthObservationDTO> growthObservationDTOsList = new ArrayList<>();
+			List<GrowthObservation> growthObservationList = growthRepository.findGrowthListByDate(id,growthobservationdate);
+			for (int i = 0; i < growthObservationList.size(); i++) {
+				GrowthObservation growthObservation = (GrowthObservation) growthObservationList.get(i);
+				GrowthObservationDTO growthObservationDTO = new GrowthObservationDTO(
+						growthObservation.getGrowthobsvid(), growthObservation.getTank().getTankid(),
+						growthObservation.getCount(), growthObservation.getGrowthobservationdate(),
+						"" + growthObservation.getCreateddate(), "" + growthObservation.getModifieddate());
+				growthObservationDTOsList.add(growthObservationDTO);
+			}
+			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, growthObservationDTOsList,
+					AquaConstants.success);
+		} catch (Exception e) {
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.INTERNALERROR, "Failed",
+					AquaConstants.failed);
+		}
+		return new ResponseEntity<>(responseDTO,
 				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
