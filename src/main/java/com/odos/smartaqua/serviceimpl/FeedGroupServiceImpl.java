@@ -63,68 +63,116 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 	public ResponseEntity<ResponseDTO> saveFeedTemplate(FeedGroupDTO feedGroupDTO) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		try {
+			String groupname = feedGroupRepository.findGroupByDate(feedGroupDTO.getFeeddate(), feedGroupDTO.getUserID(),
+					feedGroupDTO.getCultureid());
 			List<FeedTemplateDTO> supplimentsList = feedGroupDTO.getSuppliments();
 			List<FeedTemplateDTO> feedProductsList = feedGroupDTO.getFeedProducts();
 			FeedGroup feedgroup = new FeedGroup();
 			BeanUtils.copyProperties(feedGroupDTO, feedgroup);
 			feedgroup.setUser(userRepository.findById(feedGroupDTO.getUserID()).get());
 			feedgroup.setCulture(cultureRepository.findById(feedGroupDTO.getCultureid()).get());
-			String groupname = feedGroupRepository.findGroupByDate(feedGroupDTO.getFeeddate(), feedGroupDTO.getUserID(),feedGroupDTO.getCultureid());
-			if(groupname !=null) {
+			if (groupname != null) {
 				int count = Integer.parseInt(groupname) + 1;
-				feedgroup.setGroupname(""+count);
-			}else {
-				feedgroup.setGroupname("1");
+				if (!feedgroup.getGroupname().equalsIgnoreCase(String.valueOf(count))) {
+					responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
+							"Pls update Feed Count: " + count, AquaConstants.failed);
+				} else {
+					FeedGroup feedgroupData = feedGroupRepository.save(feedgroup);
+					Long uID = feedGroupDTO.getUserID();
+					Long feedGroupID = feedgroupData.getFeedgroupid();
+					for (int i = 0; i < feedProductsList.size(); i++) {
+						FeedTemplate feedTemplate = new FeedTemplate();
+						FeedTemplateDTO feedtemplatedto = (FeedTemplateDTO) feedProductsList.get(i);
+						feedTemplate.setProductqty(feedtemplatedto.getProductqty());
+						feedTemplate.setPriceperqty(feedtemplatedto.getPriceperqty());
+						feedTemplate.setUser(userRepository.findById(uID).get());
+						feedTemplate.setQuantitycategories(
+								qtycategoryRepository.findById(feedtemplatedto.getQuantitycategoryid()).get());
+						feedTemplate.setProductcategory(
+								productCategoryRepository.findById(feedtemplatedto.getProductcatgeoryID()).get());
+						feedTemplate.setProduct(productRepository.findById(feedtemplatedto.getProductID()).get());
+						feedTemplate.setFeedgroup(feedGroupRepository.findById(feedGroupID).get());
+						feedTemplateRepository.save(feedTemplate);
+						stockRepository.updateProduct(feedtemplatedto.getProductID(),
+								feedtemplatedto.getAvailablestock(), feedGroupDTO.getUserID());
+					}
+					for (int j = 0; j < supplimentsList.size(); j++) {
+						FeedTemplate feedTemplate = new FeedTemplate();
+						FeedTemplateDTO supplimentsdto = (FeedTemplateDTO) supplimentsList.get(j);
+						feedTemplate.setProductqty(supplimentsdto.getProductqty());
+						feedTemplate.setPriceperqty(supplimentsdto.getPriceperqty());
+						feedTemplate.setUser(userRepository.findById(uID).get());
+						feedTemplate.setQuantitycategories(
+								qtycategoryRepository.findById(supplimentsdto.getQuantitycategoryid()).get());
+						feedTemplate.setProductcategory(
+								productCategoryRepository.findById(supplimentsdto.getProductcatgeoryID()).get());
+						feedTemplate.setProduct(productRepository.findById(supplimentsdto.getProductID()).get());
+						feedTemplate.setFeedgroup(feedGroupRepository.findById(feedGroupID).get());
+						feedTemplateRepository.save(feedTemplate);
+						stockRepository.updateProduct(supplimentsdto.getProductID(), supplimentsdto.getAvailablestock(),
+								feedGroupDTO.getUserID());
+					}
+					FeedGroupDTO returnfeedgroup = new FeedGroupDTO(feedgroupData.getFeedgroupid(), null,
+							feedgroupData.getUser().getUserid(), feedgroupData.getCulture().getCultureid(),
+							feedgroupData.getAccess(), feedgroupData.getGroupname(), feedgroupData.getFeeddate(),
+							feedgroupData.getFeeddateandtime(), feedgroupData.getComment(), null, null);
+					responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, returnfeedgroup,
+							AquaConstants.success);
+				}
+			} else {
+				if (!feedgroup.getGroupname().equalsIgnoreCase("1")) {
+					responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, "Pls update Feed Count: 1",
+							AquaConstants.failed);
+				} else {
+					FeedGroup feedgroupData = feedGroupRepository.save(feedgroup);
+					Long uID = feedGroupDTO.getUserID();
+					Long feedGroupID = feedgroupData.getFeedgroupid();
+					for (int i = 0; i < feedProductsList.size(); i++) {
+						FeedTemplate feedTemplate = new FeedTemplate();
+						FeedTemplateDTO feedtemplatedto = (FeedTemplateDTO) feedProductsList.get(i);
+						feedTemplate.setProductqty(feedtemplatedto.getProductqty());
+						feedTemplate.setPriceperqty(feedtemplatedto.getPriceperqty());
+						feedTemplate.setUser(userRepository.findById(uID).get());
+						feedTemplate.setQuantitycategories(
+								qtycategoryRepository.findById(feedtemplatedto.getQuantitycategoryid()).get());
+						feedTemplate.setProductcategory(
+								productCategoryRepository.findById(feedtemplatedto.getProductcatgeoryID()).get());
+						feedTemplate.setProduct(productRepository.findById(feedtemplatedto.getProductID()).get());
+						feedTemplate.setFeedgroup(feedGroupRepository.findById(feedGroupID).get());
+						feedTemplateRepository.save(feedTemplate);
+						stockRepository.updateProduct(feedtemplatedto.getProductID(),
+								feedtemplatedto.getAvailablestock(), feedGroupDTO.getUserID());
+					}
+					for (int j = 0; j < supplimentsList.size(); j++) {
+						FeedTemplate feedTemplate = new FeedTemplate();
+						FeedTemplateDTO supplimentsdto = (FeedTemplateDTO) supplimentsList.get(j);
+						feedTemplate.setProductqty(supplimentsdto.getProductqty());
+						feedTemplate.setPriceperqty(supplimentsdto.getPriceperqty());
+						feedTemplate.setUser(userRepository.findById(uID).get());
+						feedTemplate.setQuantitycategories(
+								qtycategoryRepository.findById(supplimentsdto.getQuantitycategoryid()).get());
+						feedTemplate.setProductcategory(
+								productCategoryRepository.findById(supplimentsdto.getProductcatgeoryID()).get());
+						feedTemplate.setProduct(productRepository.findById(supplimentsdto.getProductID()).get());
+						feedTemplate.setFeedgroup(feedGroupRepository.findById(feedGroupID).get());
+						feedTemplateRepository.save(feedTemplate);
+						stockRepository.updateProduct(supplimentsdto.getProductID(), supplimentsdto.getAvailablestock(),
+								feedGroupDTO.getUserID());
+					}
+					FeedGroupDTO returnfeedgroup = new FeedGroupDTO(feedgroupData.getFeedgroupid(), null,
+							feedgroupData.getUser().getUserid(), feedgroupData.getCulture().getCultureid(),
+							feedgroupData.getAccess(), feedgroupData.getGroupname(), feedgroupData.getFeeddate(),
+							feedgroupData.getFeeddateandtime(), feedgroupData.getComment(), null, null);
+					responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, returnfeedgroup,
+							AquaConstants.success);
+				}
 			}
-			FeedGroup feedgroupData = feedGroupRepository.save(feedgroup);
-			Long uID = feedGroupDTO.getUserID();
-			Long feedGroupID = feedgroupData.getFeedgroupid();
-			for (int i = 0; i < feedProductsList.size(); i++) {
-				FeedTemplate feedTemplate = new FeedTemplate();
-				FeedTemplateDTO feedtemplatedto = (FeedTemplateDTO) feedProductsList.get(i);
-				feedTemplate.setProductqty(feedtemplatedto.getProductqty());
-				feedTemplate.setPriceperqty(feedtemplatedto.getPriceperqty());
-				feedTemplate.setUser(userRepository.findById(uID).get());
-				feedTemplate
-						.setQuantitycategories(qtycategoryRepository.findById(feedtemplatedto.getQuantitycategoryid()).get());
-				feedTemplate
-						.setProductcategory(productCategoryRepository.findById(feedtemplatedto.getProductcatgeoryID()).get());
-				feedTemplate.setProduct(productRepository.findById(feedtemplatedto.getProductID()).get());
-				feedTemplate.setFeedgroup(feedGroupRepository.findById(feedGroupID).get());
-				feedTemplateRepository.save(feedTemplate);
-				stockRepository.updateProduct(feedtemplatedto.getProductID(), feedtemplatedto.getAvailablestock(),
-						feedGroupDTO.getUserID());
-			}
-			for (int j = 0; j < supplimentsList.size(); j++) {
-				FeedTemplate feedTemplate = new FeedTemplate();
-				FeedTemplateDTO supplimentsdto = (FeedTemplateDTO) supplimentsList.get(j);
-				feedTemplate.setProductqty(supplimentsdto.getProductqty());
-				feedTemplate.setPriceperqty(supplimentsdto.getPriceperqty());
-				feedTemplate.setUser(userRepository.findById(uID).get());
-				feedTemplate
-						.setQuantitycategories(qtycategoryRepository.findById(supplimentsdto.getQuantitycategoryid()).get());
-				feedTemplate
-						.setProductcategory(productCategoryRepository.findById(supplimentsdto.getProductcatgeoryID()).get());
-				feedTemplate.setProduct(productRepository.findById(supplimentsdto.getProductID()).get());
-				feedTemplate.setFeedgroup(feedGroupRepository.findById(feedGroupID).get());
-				feedTemplateRepository.save(feedTemplate);
-				stockRepository.updateProduct(supplimentsdto.getProductID(), supplimentsdto.getAvailablestock(),
-						feedGroupDTO.getUserID());
-			}
-			FeedGroupDTO returnfeedgroup = new FeedGroupDTO(feedgroupData.getFeedgroupid(), null,
-					feedgroupData.getUser().getUserid(), feedgroupData.getCulture().getCultureid(),
-					feedgroupData.getAccess(), feedgroupData.getGroupname(), feedgroupData.getFeeddate(),
-					feedgroupData.getFeeddateandtime(),feedgroupData.getComment(), null, null);
-			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, returnfeedgroup,
-					AquaConstants.success);
 
 		} catch (Exception e) {
 			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
 					AquaConstants.failed + e);
 		}
-
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
 	/*
@@ -134,7 +182,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 		ResponseDTO responseDTO = new ResponseDTO();
 
 		try {
-			List<TemplateFeedDTO> templatedtolist = new ArrayList<TemplateFeedDTO>();
+			List<TemplateFeedDTO> templatedtolist = new ArrayList<>();
 			List<FeedTemplate> feedTemplateList = feedTemplateRepository.findAll();
 			for (int i = 0; i < feedTemplateList.size(); i++) {
 				FeedTemplate feedtemplate = (FeedTemplate) feedTemplateList.get(i);
@@ -153,8 +201,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 			responseDTO = new ResponseDTO(AquaConstants.failed, HttpStatus.INTERNAL_SERVER_ERROR.toString(),
 					AquaConstants.failed + e, AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 	/*
 	 * FEED GROUPS
@@ -164,7 +211,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 		ResponseDTO responseDTO = new ResponseDTO();
 
 		try {
-			List<FeedGroupResDTO> templatedtolist = new ArrayList<FeedGroupResDTO>();
+			List<FeedGroupResDTO> templatedtolist = new ArrayList<>();
 			List<FeedGroup> feedGroupsList = feedGroupRepository.findAll();
 			List<FeedTemplateResponseDTO> feedProductsList;
 			List<FeedTemplateResponseDTO> supplimentsList;
@@ -175,7 +222,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 
 				List<FeedTemplate> feedTemplatesList = feedTemplateRepository
 						.findTemplatesByProductCatg(feedgroup.getFeedgroupid(), new Long(1));
-				feedProductsList = new ArrayList<FeedTemplateResponseDTO>();
+				feedProductsList = new ArrayList<>();
 				for (int j = 0; j < feedTemplatesList.size(); j++) {
 					FeedTemplate feedtempalte = (FeedTemplate) feedTemplatesList.get(j);
 					FeedTemplateResponseDTO feedtemplatedto = new FeedTemplateResponseDTO();
@@ -190,7 +237,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 
 				List<FeedTemplate> supplimentTemplatesList = feedTemplateRepository
 						.findTemplatesByProductCatg(feedgroup.getFeedgroupid(), new Long(2));
-				supplimentsList = new ArrayList<FeedTemplateResponseDTO>();
+				supplimentsList = new ArrayList<>();
 				for (int k = 0; k < supplimentTemplatesList.size(); k++) {
 					FeedTemplate supplimenttempalte = (FeedTemplate) supplimentTemplatesList.get(k);
 					FeedTemplateResponseDTO supplimentsDTO = new FeedTemplateResponseDTO();
@@ -205,7 +252,8 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 				}
 
 				FeedGroupResDTO feedgroupdto = new FeedGroupResDTO(feedgroup.getFeedgroupid(),
-						feedgroup.getUser().getUserid(), feedgroup.getGroupname(),feedgroup.getFeeddate(), feedProductsList, supplimentsList);
+						feedgroup.getUser().getUserid(), feedgroup.getGroupname(), feedgroup.getFeeddate(),
+						feedProductsList, supplimentsList);
 				templatedtolist.add(feedgroupdto);
 			}
 
@@ -215,8 +263,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 			responseDTO = new ResponseDTO(AquaConstants.failed, HttpStatus.INTERNAL_SERVER_ERROR.toString(),
 					AquaConstants.failed + e, AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
 	/*
@@ -225,7 +272,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 	public ResponseEntity<ResponseDTO> findtemplateGroups(Long userid, Long groupid) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		try {
-			List<TemplateFeedDTO> templatedtolist = new ArrayList<TemplateFeedDTO>();
+			List<TemplateFeedDTO> templatedtolist = new ArrayList<>();
 			List<FeedTemplate> feedTemplateList = feedTemplateRepository.findTemplatesByUser(userid, groupid);
 			for (int i = 0; i < feedTemplateList.size(); i++) {
 				FeedTemplate feedtemplate = (FeedTemplate) feedTemplateList.get(i);
@@ -244,26 +291,25 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 			responseDTO = new ResponseDTO(AquaConstants.failed, HttpStatus.INTERNAL_SERVER_ERROR.toString(),
 					AquaConstants.failed + e, AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
-	
+
 	/*
 	 * FEED GROUPS
 	 */
 
-	public ResponseEntity<ResponseDTO> feedList(Long userid,Long cultureId,String feedDate) {
+	public ResponseEntity<ResponseDTO> feedList(Long userid, Long cultureId, String feedDate) {
 		ResponseDTO responseDTO = new ResponseDTO();
 
 		try {
 			List<FeedGroupResDTO> templatedtolist = new ArrayList<>();
 			List<FeedGroup> feedGroupsList;
-			if(feedDate.equalsIgnoreCase("0")) {
-				feedGroupsList = feedGroupRepository.findGroupByCultureId(userid,cultureId);
-			}else {
-				feedGroupsList = feedGroupRepository.findGroupsByCultureFeeddate(userid,cultureId,feedDate);
+			if (feedDate.equalsIgnoreCase("0")) {
+				feedGroupsList = feedGroupRepository.findGroupByCultureId(userid, cultureId);
+			} else {
+				feedGroupsList = feedGroupRepository.findGroupsByCultureFeeddate(userid, cultureId, feedDate);
 			}
-			
+
 			List<FeedTemplateResponseDTO> feedProductsList;
 			List<FeedTemplateResponseDTO> supplimentsList;
 
@@ -273,7 +319,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 
 				List<FeedTemplate> feedTemplatesList = feedTemplateRepository
 						.findTemplatesByProductCatg(feedgroup.getFeedgroupid(), new Long(1));
-				feedProductsList = new ArrayList<FeedTemplateResponseDTO>();
+				feedProductsList = new ArrayList<>();
 				for (int j = 0; j < feedTemplatesList.size(); j++) {
 					FeedTemplate feedtempalte = (FeedTemplate) feedTemplatesList.get(j);
 					FeedTemplateResponseDTO feedtemplatedto = new FeedTemplateResponseDTO();
@@ -289,7 +335,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 
 				List<FeedTemplate> supplimentTemplatesList = feedTemplateRepository
 						.findTemplatesByProductCatg(feedgroup.getFeedgroupid(), new Long(2));
-				supplimentsList = new ArrayList<FeedTemplateResponseDTO>();
+				supplimentsList = new ArrayList<>();
 				for (int k = 0; k < supplimentTemplatesList.size(); k++) {
 					FeedTemplate supplimenttempalte = (FeedTemplate) supplimentTemplatesList.get(k);
 					FeedTemplateResponseDTO supplimentsDTO = new FeedTemplateResponseDTO();
@@ -305,7 +351,8 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 				}
 
 				FeedGroupResDTO feedgroupdto = new FeedGroupResDTO(feedgroup.getFeedgroupid(),
-						feedgroup.getUser().getUserid(), feedgroup.getGroupname(),feedgroup.getFeeddate(), feedProductsList, supplimentsList);
+						feedgroup.getUser().getUserid(), feedgroup.getGroupname(), feedgroup.getFeeddate(),
+						feedProductsList, supplimentsList);
 				templatedtolist.add(feedgroupdto);
 			}
 
@@ -315,8 +362,7 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 			responseDTO = new ResponseDTO(AquaConstants.failed, HttpStatus.INTERNAL_SERVER_ERROR.toString(),
 					AquaConstants.failed + e, AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
 }
