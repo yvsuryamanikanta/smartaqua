@@ -63,6 +63,10 @@ public class User {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.MERGE)
 	public Set<FeedTemplate> feedtemplate;
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.MERGE)
+	public Set<AnimalObservation> animalObservations;
 	/*
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.MERGE)

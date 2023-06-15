@@ -35,21 +35,25 @@ public class Tank {
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "userid")
 	public User user;
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tank", cascade = CascadeType.MERGE)
 	public Set<Culture> culture;
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tank", cascade = CascadeType.MERGE)
 	public Set<Checktray> checktray;
 
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tank", cascade = CascadeType.MERGE)
+	public Set<AnimalObservation> animalObservations;
+
 	@Column(nullable = false, updatable = true)
 	public String tankname;
-	
+
 	@Column(nullable = false, updatable = true)
 	public String tankSize;
-	
+
 	@Column(nullable = false, updatable = true)
 	public String tankSizeType;
 
@@ -58,10 +62,10 @@ public class Tank {
 
 	@Column(nullable = true, updatable = true)
 	public String tankimage;
-	
+
 	@Column(nullable = true, updatable = true)
 	public String latitude;
-	
+
 	@Column(nullable = true, updatable = true)
 	public String longitude;
 
