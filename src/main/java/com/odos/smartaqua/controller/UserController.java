@@ -25,6 +25,11 @@ public class UserController {
 			@PathVariable("createdby") String createdby) {
 		return userService.getFeedBoysList(roleid, createdby);
 	}
+	
+	@GetMapping(value = "/list/{userid}")
+	public ResponseEntity<ResponseDTO> getUsersById(@PathVariable("userid") Long userid) {
+		return userService.getUserDetails(userid);
+	}
 
 	@PostMapping(value = "/save")
 	public ResponseEntity<ResponseDTO> saveUser(@RequestBody UserDTO userdto) {
@@ -36,9 +41,15 @@ public class UserController {
 		return userService.authenticateUser(userdto);
 	}
 	
+	@PostMapping(value = "/update")
+	public ResponseEntity<ResponseDTO> updateUser(@RequestBody UserDTO userdto) {
+		return userService.updateUser(userdto);
+	}
+	
 	@PostMapping(value = "/updatePassword")
 	public ResponseEntity<ResponseDTO> updatePassword(@RequestBody UserDTO userdto) {
 		return userService.updatePassword(userdto);
 	}
+
 
 }

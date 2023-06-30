@@ -2,15 +2,11 @@ package com.odos.smartaqua.entities;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,26 +17,28 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class GrowthObservation {
-	
+public class Banner {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
-	public Long growthobsvid;
+	public Long bannerid;
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "tankid")
-	public Tank tank;
+	@Column(nullable = true, updatable = true, unique = true)
+	public String bannertitle;
+
+	@Column(nullable = true, updatable = true, unique = true)
+	public String bannerimage;
 	
+	@Column(nullable = true, updatable = true, unique = true)
+	public String bannertype;
+	
+	@Column(nullable = true, updatable = true, unique = true)
+	public String bannerlink;
+
 	@Column(nullable = false, updatable = true)
-	public String count;
-	
-	@Column(nullable = false, updatable = true)
-	public String weight;
-	
-	@Column(nullable = false, updatable = true)
-	public String growthobservationdate;
-	
+	public String cretaedby;
+
 	@CreationTimestamp
 	private Date createddate;
 
@@ -49,5 +47,6 @@ public class GrowthObservation {
 
 	@Column(columnDefinition = "boolean default true")
 	public Boolean isactive = true;
+
 
 }

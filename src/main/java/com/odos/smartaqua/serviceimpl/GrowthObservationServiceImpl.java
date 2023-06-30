@@ -59,7 +59,7 @@ public class GrowthObservationServiceImpl implements GrowthObservationService {
 				GrowthObservation growthObservation = (GrowthObservation) growthObservationList.get(i);
 				GrowthObservationDTO growthObservationDTO = new GrowthObservationDTO(
 						growthObservation.getGrowthobsvid(), growthObservation.getTank().getTankid(),
-						growthObservation.getCount(), growthObservation.getGrowthobservationdate(),
+						growthObservation.getCount(),growthObservation.getWeight(), growthObservation.getGrowthobservationdate(),
 						"" + growthObservation.getCreateddate(), "" + growthObservation.getModifieddate());
 				growthObservationDTOsList.add(growthObservationDTO);
 			}
@@ -86,7 +86,7 @@ public class GrowthObservationServiceImpl implements GrowthObservationService {
 				GrowthObservation growthObservation = (GrowthObservation) growthObservationList.get(i);
 				GrowthObservationDTO growthObservationDTO = new GrowthObservationDTO(
 						growthObservation.getGrowthobsvid(), growthObservation.getTank().getTankid(),
-						growthObservation.getCount(), growthObservation.getGrowthobservationdate(),
+						growthObservation.getCount(), growthObservation.getWeight(),growthObservation.getGrowthobservationdate(),
 						"" + growthObservation.getCreateddate(), "" + growthObservation.getModifieddate());
 				growthObservationDTOsList.add(growthObservationDTO);
 			}

@@ -60,6 +60,9 @@ public class FeedGroup {
 	
 	@Column(nullable = false, updatable = true)
 	public String comment;
+	
+	@Column(nullable = false, updatable = true)
+	public String type;
 
 	@Column(nullable = true, updatable = true)
 	public String groupimage;

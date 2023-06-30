@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService {
 		User userData = userRepository.findUserByNumber(userdto.getUsernumber());
 		if (userData != null) {
 			if (userData.getIsactive() == true) {
-				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED,
-						AquaConstants.alreadyuser, AquaConstants.EMPTY);
+				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, AquaConstants.alreadyuser,
+						AquaConstants.EMPTY);
 			} else {
 				long rndNumber = Helper.createRandomInteger(111, 579026);
 				if (Helper.sendOTP(userdto.getUsernumber(), rndNumber, AquaConstants.AK_VALUE,
@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService {
 					responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, userDto,
 							AquaConstants.EMPTY);
 				} else {
-					responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
-							AquaConstants.failed, AquaConstants.failed);
+					responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+							AquaConstants.failed);
 				}
 			}
 
@@ -114,16 +114,16 @@ public class UserServiceImpl implements UserService {
 						responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, userDto,
 								AquaConstants.EMPTY);
 					} else {
-						responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
-								AquaConstants.failed, AquaConstants.failed);
+						responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+								AquaConstants.failed);
 					}
 				} catch (Exception e) {
-					responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
-							AquaConstants.failed, e.toString()+"hello");
+					responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+							e.toString() + "hello");
 				}
 			} else {
-				responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
-						AquaConstants.invalidrole, AquaConstants.invalidrole);
+				responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.invalidrole,
+						AquaConstants.invalidrole);
 			}
 		}
 		return new ResponseEntity<ResponseDTO>(responseDTO,
@@ -146,11 +146,35 @@ public class UserServiceImpl implements UserService {
 				userDtoList.add(userDto);
 			}
 
-			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, userDtoList,
-					AquaConstants.EMPTY);
+			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, userDtoList, AquaConstants.EMPTY);
 		} catch (Exception e) {
-			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
-					AquaConstants.failed, AquaConstants.failed);
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+					AquaConstants.failed);
+		}
+		return new ResponseEntity<ResponseDTO>(responseDTO,
+				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+	}
+
+	public ResponseEntity<ResponseDTO> getUserDetails(Long userid) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		try {
+			List<User> usersList = userRepository.findUser(userid);
+			List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+			for (User saveduser : usersList) {
+
+				UserDTO userDto = new UserDTO();
+				BeanUtils.copyProperties(saveduser, userDto);
+				userDto.setRoleid(saveduser.getRoles().getRoleid());
+				userDto.setUniqueid(saveduser.getDevice().getUniqueID());
+				userDto.setNotificationid(saveduser.getDevice().getNotificationid());
+				userDto.setRolecode(saveduser.getRoles().getRolecode());
+				userDtoList.add(userDto);
+			}
+
+			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, userDtoList, AquaConstants.EMPTY);
+		} catch (Exception e) {
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+					AquaConstants.failed);
 		}
 		return new ResponseEntity<ResponseDTO>(responseDTO,
 				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
@@ -175,8 +199,8 @@ public class UserServiceImpl implements UserService {
 			}
 
 		} catch (Exception e) {
-			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
-					AquaConstants.failed, AquaConstants.failed);
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+					AquaConstants.failed);
 		}
 		return new ResponseEntity<ResponseDTO>(responseDTO,
 				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
@@ -203,11 +227,64 @@ public class UserServiceImpl implements UserService {
 			}
 
 		} catch (Exception e) {
-			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
-					AquaConstants.failed, AquaConstants.failed);
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+					AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
+	@Override
+	public ResponseEntity<ResponseDTO> updateUser(UserDTO userdto) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		try {
+			User userDetails = userRepository.findUserByNumberAndId(userdto.getUsernumber(), userdto.getUserid());
+			if (userDetails != null) {
+				User updateUser = new User();
+				
+				if (userdto.getUsername() == null) {
+					userdto.setUsername(userDetails.getUsername());
+				}
+
+				if (userdto.getPassword() == null) {
+					userdto.setPassword(userDetails.getPassword());
+				}
+
+				if (userdto.getUseremail() == null) {
+					userdto.setUseremail(userDetails.getUseremail());
+				}
+
+				if (userdto.getUserlocation() == null) {
+					userdto.setUserlocation(userDetails.getUserlocation());
+				}
+
+				if (userdto.getUserimage() == null) {
+					userdto.setUserimage(userDetails.getUserimage());
+				}
+
+				if (userdto.getCreatedby() == null) {
+					userdto.setCreatedby(userDetails.getCreatedby());
+				}
+				updateUser.setCreateddate(userDetails.getCreateddate());
+				updateUser.setIsactive(userDetails.getIsactive());
+				updateUser.setRoles(userDetails.getRoles());
+				updateUser.setDevice(userDetails.getDevice());
+				BeanUtils.copyProperties(userdto, updateUser);
+				userRepository.save(updateUser);
+				userdto.setRoleid(updateUser.getRoles().getRoleid());
+				userdto.setRolecode(updateUser.getRoles().getRolecode());
+				userdto.setUniqueid(updateUser.getDevice().getUniqueID());
+				userdto.setNotificationid(updateUser.getDevice().getNotificationid());
+				responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, userdto,
+						AquaConstants.EMPTY);
+			} else {
+				responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED,
+						AquaConstants.invalidcredentials, AquaConstants.invalidcredentials);
+			}
+
+		} catch (Exception e) {
+			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
+					AquaConstants.failed + e);
+		}
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+	}
 }

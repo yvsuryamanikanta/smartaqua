@@ -10,11 +10,11 @@ import com.odos.smartaqua.entities.FeedTemplate;
 
 public interface FeedTemplateRepository extends JpaRepository<FeedTemplate, Long> {
 
-	@Query(nativeQuery = true, value = "select * from feedtemplate where userid =:userid and feedgroupid =:groupid")
-	List<FeedTemplate> findTemplatesByUser(@Param("userid") Long userid, @Param("groupid") Long groupid);
+	@Query(nativeQuery = true, value = "select * from feedtemplate where feedgroupid =:groupid")
+	List<FeedTemplate> findfeedgroupById(@Param("groupid") Long groupid);
 	
 	@Query(nativeQuery = true, value = "select * from feedtemplate where feedgroupid =:groupid and productcatgeoryid =:productcatgeoryid")
-	List<FeedTemplate> findTemplatesByProductCatg(@Param("groupid") Long groupid,@Param("productcatgeoryid") Long productcatgeoryid);
+	List<FeedTemplate> findListByProductCatgory(@Param("groupid") Long groupid,@Param("productcatgeoryid") Long productcatgeoryid);
 
 
 }

@@ -45,10 +45,16 @@ public class ChecktrayObservation {
 	public String wastagecolor;
 	
 	@Column(nullable = false, updatable = true)
-	public String mortalitytype;
+	public String redmortality;
 	
 	@Column(nullable = false, updatable = true)
-	public String mortalitycount;
+	public String redmortalitycount;
+	
+	@Column(nullable = false, updatable = true)
+	public String whitemortality;
+	
+	@Column(nullable = false, updatable = true)
+	public String whitemortalitycount;
 	
 	@Column(nullable = false, updatable = true)
 	public String potaciumdefeciency;

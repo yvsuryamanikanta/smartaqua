@@ -34,7 +34,7 @@ public class StockServiceImpl implements StockService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	/*
 	 * -----------------SAVE STOCK -------------
 	 */
@@ -92,11 +92,12 @@ public class StockServiceImpl implements StockService {
 			List<Stock> productsList = stockRepository.getProductist();
 			for (int i = 0; i < productsList.size(); i++) {
 				Stock stock = (Stock) productsList.get(i);
-				StockDTO stockdto = new StockDTO(stock.getStockid(), stock.getUser().getUserid(),stock.getProduct().getProductid(),
-						stock.getProduct().getProductname(),
+				StockDTO stockdto = new StockDTO(stock.getStockid(), stock.getUser().getUserid(),
+						stock.getProduct().getProductid(), stock.getProduct().getProductname(),
 						stock.getProduct().getProductcategory().getProductcatgeoryid(),
 						stock.getQuantitycategories().getQuantitycategoryid(), stock.getNewstock(), stock.getOldstock(),
-						stock.getAvailablestock(), stock.getMrp(), stock.getPath(), "" + stock.getCreateddate(),
+						stock.getAvailablestock(), stock.getActualprice(), stock.getPurchaseprice(),
+						stock.getDiscount(), stock.getPath(), "" + stock.getCreateddate(),
 						stock.getProduct().getProductcategory().getCode(),
 						stock.getQuantitycategories().getQtycategorycode());
 				stockDtoList.add(stockdto);
@@ -105,7 +106,7 @@ public class StockServiceImpl implements StockService {
 					AquaConstants.success);
 		} catch (Exception e) {
 			responseDTO = new ResponseDTO(AquaConstants.failed, HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-					AquaConstants.failed+e, AquaConstants.failed);
+					AquaConstants.failed + e, AquaConstants.failed);
 		}
 
 		return new ResponseEntity<ResponseDTO>(responseDTO,
@@ -122,11 +123,12 @@ public class StockServiceImpl implements StockService {
 			List<Stock> productsList = stockRepository.getStockByUser(userid);
 			for (int i = 0; i < productsList.size(); i++) {
 				Stock stock = (Stock) productsList.get(i);
-				StockDTO stockdto = new StockDTO(stock.getStockid(), stock.getUser().getUserid(), stock.getProduct().getProductid(),
-						stock.getProduct().getProductname(),
+				StockDTO stockdto = new StockDTO(stock.getStockid(), stock.getUser().getUserid(),
+						stock.getProduct().getProductid(), stock.getProduct().getProductname(),
 						stock.getProduct().getProductcategory().getProductcatgeoryid(),
 						stock.getQuantitycategories().getQuantitycategoryid(), stock.getNewstock(), stock.getOldstock(),
-						stock.getAvailablestock(), stock.getMrp(), stock.getPath(), "" + stock.getCreateddate(),
+						stock.getAvailablestock(), stock.getActualprice(), stock.getPurchaseprice(),
+						stock.getDiscount(), stock.getPath(), "" + stock.getCreateddate(),
 						stock.getProduct().getProductcategory().getCode(),
 						stock.getQuantitycategories().getQtycategorycode());
 				stockDtoList.add(stockdto);
@@ -151,11 +153,12 @@ public class StockServiceImpl implements StockService {
 			List<Stock> productsList = stockRepository.getStockByProduct(userid, productid);
 			for (int i = 0; i < productsList.size(); i++) {
 				Stock stock = (Stock) productsList.get(i);
-				StockDTO stockdto = new StockDTO(stock.getStockid(), stock.getUser().getUserid(),stock.getProduct().getProductid(),
-						stock.getProduct().getProductname(),
+				StockDTO stockdto = new StockDTO(stock.getStockid(), stock.getUser().getUserid(),
+						stock.getProduct().getProductid(), stock.getProduct().getProductname(),
 						stock.getProduct().getProductcategory().getProductcatgeoryid(),
 						stock.getQuantitycategories().getQuantitycategoryid(), stock.getNewstock(), stock.getOldstock(),
-						stock.getAvailablestock(), stock.getMrp(), stock.getPath(), "" + stock.getCreateddate(),
+						stock.getAvailablestock(), stock.getActualprice(), stock.getPurchaseprice(),
+						stock.getDiscount(), stock.getPath(), "" + stock.getCreateddate(),
 						stock.getProduct().getProductcategory().getCode(),
 						stock.getQuantitycategories().getQtycategorycode());
 				stockDtoList.add(stockdto);
@@ -166,7 +169,7 @@ public class StockServiceImpl implements StockService {
 			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
 					AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
+		return new ResponseEntity<>(responseDTO,
 				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 

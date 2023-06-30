@@ -30,6 +30,8 @@ public class FeedGroupDTO {
 	private String feeddateandtime;
 	
 	private String comment;
+	
+	private String type;
 
 	private List<FeedTemplateDTO> feedProducts;
 

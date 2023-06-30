@@ -17,6 +17,8 @@ public class GrowthObservationDTO {
 	
 	private String count;
 	
+	private String weight;
+	
 	private String growthobservationdate;
 	
 	private String createddate;

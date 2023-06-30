@@ -51,7 +51,13 @@ public class Stock {
 	public String availablestock;
 
 	@Column(nullable = false, updatable = true, unique = false)
-	public String mrp;
+	public String actualprice;
+	
+	@Column(nullable = false, updatable = true, unique = false)
+	public String purchaseprice;
+	
+	@Column(nullable = false, updatable = true, unique = false)
+	public String discount;
 	
 	@Column(nullable = false, updatable = true, unique = false)
 	public String path;

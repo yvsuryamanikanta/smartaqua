@@ -24,10 +24,10 @@ public class CheckrayObservationServiceImpl implements ChecktrayObservationServi
 
 	@Autowired
 	private ChecktrayObservationRepository checktrayObservationRepository;
-	
+
 	@Autowired
 	private ChecktrayRepository checktrayRepository;
-	
+
 	@Autowired
 	private TankRepository tankRepository;
 
@@ -39,7 +39,8 @@ public class CheckrayObservationServiceImpl implements ChecktrayObservationServi
 		try {
 			ChecktrayObservation checktrayObservation = new ChecktrayObservation();
 			BeanUtils.copyProperties(checktrayObservationDTO, checktrayObservation);
-			checktrayObservation.setChecktray(checktrayRepository.findById(checktrayObservationDTO.getChecktrayid()).get());
+			checktrayObservation
+					.setChecktray(checktrayRepository.findById(checktrayObservationDTO.getChecktrayid()).get());
 			checktrayObservation.setTank(tankRepository.findById(checktrayObservationDTO.getTankid()).get());
 			checktrayObservationRepository.save(checktrayObservation);
 			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, AquaConstants.saved,
@@ -64,12 +65,14 @@ public class CheckrayObservationServiceImpl implements ChecktrayObservationServi
 			for (int i = 0; i < checktrayObservationList.size(); i++) {
 				ChecktrayObservation checktrayObservation = (ChecktrayObservation) checktrayObservationList.get(i);
 				ChecktrayObservationDTO checktrayObservationDTO = new ChecktrayObservationDTO(
-						checktrayObservation.getChecktrayobsvid(), checktrayObservation.getChecktray().getChecktrayid(),checktrayObservation.getTank().getTankid(),
-						checktrayObservation.getFeedstatus(), checktrayObservation.getWastagecolor(),
-						checktrayObservation.getMortalitytype(), checktrayObservation.getMortalitycount(),
-						checktrayObservation.getPotaciumdefeciency(), checktrayObservation.getMagniciumdefeciency(),
-						checktrayObservation.getCalciumdefeciency(), checktrayObservation.getVibrieostatus(),
-						checktrayObservation.getCrampstatus(), checktrayObservation.getChecktrayobsvdate(),"" + checktrayObservation.getCreateddate(),
+						checktrayObservation.getChecktrayobsvid(), checktrayObservation.getChecktray().getChecktrayid(),
+						checktrayObservation.getTank().getTankid(), checktrayObservation.getFeedstatus(),
+						checktrayObservation.getWastagecolor(), checktrayObservation.getRedmortality(),
+						checktrayObservation.getRedmortalitycount(), checktrayObservation.getWhitemortality(),
+						checktrayObservation.getWhitemortalitycount(), checktrayObservation.getPotaciumdefeciency(),
+						checktrayObservation.getMagniciumdefeciency(), checktrayObservation.getCalciumdefeciency(),
+						checktrayObservation.getVibrieostatus(), checktrayObservation.getCrampstatus(),
+						checktrayObservation.getChecktrayobsvdate(), "" + checktrayObservation.getCreateddate(),
 						"" + checktrayObservation.getModifieddate());
 				checktrayDtoList.add(checktrayObservationDTO);
 			}
@@ -79,8 +82,7 @@ public class CheckrayObservationServiceImpl implements ChecktrayObservationServi
 			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.INTERNALERROR, "Failed",
 					AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
 }

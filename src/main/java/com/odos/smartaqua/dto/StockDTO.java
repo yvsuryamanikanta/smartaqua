@@ -29,7 +29,11 @@ public class StockDTO {
 	
 	public String availablestock;
 
-	public String mrp;
+	public String actualprice;
+	
+	public String purchaseprice;
+	
+	public String discount;
 	
 	public String path;
 	
