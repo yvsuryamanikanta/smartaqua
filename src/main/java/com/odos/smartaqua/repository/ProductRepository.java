@@ -13,14 +13,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	@Query(nativeQuery = true, value = "select * from product")
 	List<Product> getProductist();
 
-	@Query(nativeQuery = true, value = "select * from product where productcatgeoryid =:productcatgeoryid")
-	List<Product> getProductsByCategory(@Param("productcatgeoryid") Long productcatgeoryid);
+	@Query(nativeQuery = true, value = "select * from product where productcatgeoryid =:productcatgeoryid and userid =:userid")
+	List<Product> getProductsByCategory(@Param("productcatgeoryid") Long productcatgeoryid,@Param("userid") Long userid);
 
-	@Query(nativeQuery = true, value = "select * from product where brandid =:brandid")
-	List<Product> getProductsByBrand(@Param("brandid") Long brandid);
+	@Query(nativeQuery = true, value = "select * from product where brandid =:brandid and userid =:userid")
+	List<Product> getProductsByBrand(@Param("brandid") Long brandid,@Param("userid") Long userid);
 
-	@Query(nativeQuery = true, value = "select * from product where brandid =:brandid and productcatgeoryid =:productcatgeoryid")
+	@Query(nativeQuery = true, value = "select * from product where brandid =:brandid and productcatgeoryid =:productcatgeoryid and userid =:userid")
 	List<Product> getCategoryBrands(@Param("brandid") Long brandid,
-			@Param("productcatgeoryid") Long productcatgeoryid);
+			@Param("productcatgeoryid") Long productcatgeoryid,@Param("userid") Long userid);
 
 }

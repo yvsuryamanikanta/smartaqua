@@ -11,9 +11,9 @@ public interface ProductService {
 
 	ResponseEntity<ResponseDTO> findAllProducts();
 
-	ResponseEntity<ResponseDTO> findProductsByBrand(Long brandid);
+	ResponseEntity<ResponseDTO> findProductsByBrand(Long brandid,Long userid);
 
-	ResponseEntity<ResponseDTO> findProductsByCategory(Long productcatgeoryid);
+	ResponseEntity<ResponseDTO> findProductsByCategory(Long productcatgeoryid,Long userid);
 
-	ResponseEntity<ResponseDTO> getCategoryBrands(Long brandid, Long productcatgeoryid);
+	ResponseEntity<ResponseDTO> getCategoryBrands(Long brandid, Long productcatgeoryid,Long userid);
 }

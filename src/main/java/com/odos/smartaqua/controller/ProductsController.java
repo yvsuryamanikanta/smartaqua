@@ -29,21 +29,22 @@ public class ProductsController {
 		return productsService.findAllProducts();
 	}
 
-	@RequestMapping(value = "/list/{brandid}", method = RequestMethod.GET)
-	public ResponseEntity<ResponseDTO> getProductListByBrand(@PathVariable("brandid") Long brandid) {
-		return productsService.findProductsByBrand(brandid);
+	@RequestMapping(value = "/list/{brandid}/{userid}", method = RequestMethod.GET)
+	public ResponseEntity<ResponseDTO> getProductListByBrand(@PathVariable("brandid") Long brandid,
+			@PathVariable("userid") Long userid) {
+		return productsService.findProductsByBrand(brandid, userid);
 	}
 
-	@RequestMapping(value = "/list/category/{productcatgeoryid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/list/category/{productcatgeoryid}/{userid}", method = RequestMethod.GET)
 	public ResponseEntity<ResponseDTO> getProductListByCategory(
-			@PathVariable("productcatgeoryid") Long productcatgeoryid) {
-		return productsService.findProductsByCategory(productcatgeoryid);
+			@PathVariable("productcatgeoryid") Long productcatgeoryid, @PathVariable("userid") Long userid) {
+		return productsService.findProductsByCategory(productcatgeoryid, userid);
 	}
 
-	@RequestMapping(value = "/list/{brandid}/{productcatgeoryid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/list/{brandid}/{productcatgeoryid}/{userid}", method = RequestMethod.GET)
 	public ResponseEntity<ResponseDTO> getCategoryBrands(@PathVariable("brandid") Long brandid,
-			@PathVariable("productcatgeoryid") Long productcatgeoryid) {
-		return productsService.getCategoryBrands(brandid, productcatgeoryid);
+			@PathVariable("productcatgeoryid") Long productcatgeoryid, @PathVariable("userid") Long userid) {
+		return productsService.getCategoryBrands(brandid, productcatgeoryid, userid);
 	}
 
 }

@@ -16,6 +16,7 @@ import com.odos.smartaqua.repository.BrandRepository;
 import com.odos.smartaqua.repository.ProductCategoryRepository;
 import com.odos.smartaqua.repository.ProductRepository;
 import com.odos.smartaqua.repository.QtyCategoryRepository;
+import com.odos.smartaqua.repository.UserRepository;
 import com.odos.smartaqua.service.ProductService;
 import com.odos.smartaqua.utils.AquaConstants;
 import com.odos.smartaqua.utils.StatusCodes;
@@ -35,6 +36,8 @@ public class ProductsServiceImpl implements ProductService {
 	@Autowired
 	private BrandRepository brandRepository;
 
+	@Autowired
+	private UserRepository userRepository;
 
 	/*
 	 * -----------------SAVE PRODUCT -------------
@@ -43,6 +46,7 @@ public class ProductsServiceImpl implements ProductService {
 		ResponseDTO responseDTO = new ResponseDTO();
 		Product products = new Product();
 		BeanUtils.copyProperties(productsDTO, products);
+		products.setUser(userRepository.findById(productsDTO.getUserid()).get());
 		products.setQuantitycategories(quantityTypeRepository.findById(productsDTO.getQuantitycategoryid()).get());
 		products.setProductcategory(productTypeRepository.findById(productsDTO.getProductcatgeoryid()).get());
 		products.setBrand(brandRepository.findById(productsDTO.getBrandid()).get());
@@ -54,10 +58,8 @@ public class ProductsServiceImpl implements ProductService {
 			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.CREATED, AquaConstants.failed,
 					e.getMessage());
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
-
 
 	/*
 	 * -----------------GET PRODUCT -------------
@@ -65,14 +67,15 @@ public class ProductsServiceImpl implements ProductService {
 	public ResponseEntity<ResponseDTO> findAllProducts() {
 		ResponseDTO responseDTO = new ResponseDTO();
 		try {
-			List<ProductDTO> productDtoList = new ArrayList<ProductDTO>();
+			List<ProductDTO> productDtoList = new ArrayList<>();
 			List<Product> productsList = productRepository.getProductist();
 			for (int i = 0; i < productsList.size(); i++) {
 				Product products = (Product) productsList.get(i);
-				ProductDTO productsdto = new ProductDTO(products.getProductid(),
+				ProductDTO productsdto = new ProductDTO(products.getProductid(), products.getUser().getUserid(),
 						products.getProductcategory().getProductcatgeoryid(),
 						products.getQuantitycategories().getQuantitycategoryid(), products.getBrand().getBrandid(),
-						products.getProductname(), products.getCostperqty(),products.getQuantitycategories().getQtycategory());
+						products.getProductname(), products.getCostperqty(),
+						products.getQuantitycategories().getQtycategory());
 				productDtoList.add(productsdto);
 			}
 			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, productDtoList,
@@ -82,25 +85,24 @@ public class ProductsServiceImpl implements ProductService {
 					AquaConstants.failed, AquaConstants.failed);
 		}
 
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
-
 
 	/*
 	 * -----------------GET PRODUCT BY BRAND ID -------------
 	 */
-	public ResponseEntity<ResponseDTO> findProductsByBrand(Long brandid) {
+	public ResponseEntity<ResponseDTO> findProductsByBrand(Long brandid, Long userid) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		try {
-			List<ProductDTO> productDtoList = new ArrayList<ProductDTO>();
-			List<Product> productsList = productRepository.getProductsByBrand(brandid);
+			List<ProductDTO> productDtoList = new ArrayList<>();
+			List<Product> productsList = productRepository.getProductsByBrand(brandid, userid);
 			for (int i = 0; i < productsList.size(); i++) {
 				Product products = (Product) productsList.get(i);
-				ProductDTO productsdto = new ProductDTO(products.getProductid(),
+				ProductDTO productsdto = new ProductDTO(products.getProductid(), products.getUser().getUserid(),
 						products.getProductcategory().getProductcatgeoryid(),
 						products.getQuantitycategories().getQuantitycategoryid(), products.getBrand().getBrandid(),
-						products.getProductname(), products.getCostperqty(),products.getQuantitycategories().getQtycategory());
+						products.getProductname(), products.getCostperqty(),
+						products.getQuantitycategories().getQtycategory());
 				productDtoList.add(productsdto);
 			}
 			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, productDtoList,
@@ -110,26 +112,24 @@ public class ProductsServiceImpl implements ProductService {
 					e.getMessage());
 		}
 
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
-
-	
 
 	/*
 	 * -----------------FINF PRODUCT BY CATEGORY ID -------------
 	 */
-	public ResponseEntity<ResponseDTO> findProductsByCategory(Long productcatgeoryid) {
+	public ResponseEntity<ResponseDTO> findProductsByCategory(Long productcatgeoryid, Long userid) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		try {
-			List<ProductDTO> productDtoList = new ArrayList<ProductDTO>();
-			List<Product> productsList = productRepository.getProductsByCategory(productcatgeoryid);
+			List<ProductDTO> productDtoList = new ArrayList<>();
+			List<Product> productsList = productRepository.getProductsByCategory(productcatgeoryid, userid);
 			for (int i = 0; i < productsList.size(); i++) {
 				Product products = (Product) productsList.get(i);
-				ProductDTO productsdto = new ProductDTO(products.getProductid(),
+				ProductDTO productsdto = new ProductDTO(products.getProductid(), products.getUser().getUserid(),
 						products.getProductcategory().getProductcatgeoryid(),
 						products.getQuantitycategories().getQuantitycategoryid(), products.getBrand().getBrandid(),
-						products.getProductname(), products.getCostperqty(),products.getQuantitycategories().getQtycategory());
+						products.getProductname(), products.getCostperqty(),
+						products.getQuantitycategories().getQtycategory());
 				productDtoList.add(productsdto);
 			}
 			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, productDtoList,
@@ -139,26 +139,24 @@ public class ProductsServiceImpl implements ProductService {
 					e.getMessage());
 		}
 
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
-
-	
 
 	/*
 	 * -----------------GET PRODUCTS WITH BRAND AND CATEGORY -------------
 	 */
-	public ResponseEntity<ResponseDTO> getCategoryBrands(Long brandid, Long productcatgeoryid) {
+	public ResponseEntity<ResponseDTO> getCategoryBrands(Long brandid, Long productcatgeoryid, Long userid) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		try {
-			List<ProductDTO> productDtoList = new ArrayList<ProductDTO>();
-			List<Product> productsList = productRepository.getCategoryBrands(brandid, productcatgeoryid);
+			List<ProductDTO> productDtoList = new ArrayList<>();
+			List<Product> productsList = productRepository.getCategoryBrands(brandid, productcatgeoryid, userid);
 			for (int i = 0; i < productsList.size(); i++) {
 				Product products = (Product) productsList.get(i);
-				ProductDTO productsdto = new ProductDTO(products.getProductid(),
+				ProductDTO productsdto = new ProductDTO(products.getProductid(), products.getUser().getUserid(),
 						products.getProductcategory().getProductcatgeoryid(),
 						products.getQuantitycategories().getQuantitycategoryid(), products.getBrand().getBrandid(),
-						products.getProductname(), products.getCostperqty(),products.getQuantitycategories().getQtycategory());
+						products.getProductname(), products.getCostperqty(),
+						products.getQuantitycategories().getQtycategory());
 				productDtoList.add(productsdto);
 			}
 			responseDTO = new ResponseDTO(AquaConstants.success, StatusCodes.CREATED, productDtoList,
@@ -168,8 +166,7 @@ public class ProductsServiceImpl implements ProductService {
 					e.getMessage());
 		}
 
-		return new ResponseEntity<ResponseDTO>(responseDTO,
-				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
+		return new ResponseEntity<>(responseDTO, HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
 }
