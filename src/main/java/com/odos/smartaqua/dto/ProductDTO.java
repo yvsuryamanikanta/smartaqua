@@ -10,10 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
-	
-	public Long userid;
 
 	public Long productid;
+	
+	public Long userid;
 
 	public Long productcatgeoryid;
 
