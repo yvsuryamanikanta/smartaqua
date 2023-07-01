@@ -49,7 +49,7 @@ public class CheckrayObservationServiceImpl implements ChecktrayObservationServi
 			responseDTO = new ResponseDTO(AquaConstants.failed, StatusCodes.INTERNALERROR, "Failed",
 					AquaConstants.failed);
 		}
-		return new ResponseEntity<ResponseDTO>(responseDTO,
+		return new ResponseEntity<>(responseDTO,
 				HttpStatus.valueOf(Integer.parseInt(responseDTO.getStatusCode())));
 	}
 
@@ -66,7 +66,7 @@ public class CheckrayObservationServiceImpl implements ChecktrayObservationServi
 				ChecktrayObservation checktrayObservation = (ChecktrayObservation) checktrayObservationList.get(i);
 				ChecktrayObservationDTO checktrayObservationDTO = new ChecktrayObservationDTO(
 						checktrayObservation.getChecktrayobsvid(), checktrayObservation.getChecktray().getChecktrayid(),
-						checktrayObservation.getTank().getTankid(), checktrayObservation.getFeedstatus(),
+						checktrayObservation.getTank().getTankid(), checktrayObservation.getChecktray().getChecktrayname(),checktrayObservation.getFeedstatus(),
 						checktrayObservation.getWastagecolor(), checktrayObservation.getRedmortality(),
 						checktrayObservation.getRedmortalitycount(), checktrayObservation.getWhitemortality(),
 						checktrayObservation.getWhitemortalitycount(), checktrayObservation.getPotaciumdefeciency(),

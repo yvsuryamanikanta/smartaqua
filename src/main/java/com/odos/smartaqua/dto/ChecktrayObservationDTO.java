@@ -17,6 +17,8 @@ public class ChecktrayObservationDTO {
 
 	private Long tankid;
 
+	private String checktrayname;
+	
 	private String feedstatus;
 
 	private String wastagecolor;
