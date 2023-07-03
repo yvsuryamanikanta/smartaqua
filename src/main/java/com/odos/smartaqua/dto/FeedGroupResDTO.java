@@ -23,6 +23,4 @@ public class FeedGroupResDTO {
 
 	private List<FeedTemplateResponseDTO> feedProducts;
 
-	private List<FeedTemplateResponseDTO> suppliments;
-
 }

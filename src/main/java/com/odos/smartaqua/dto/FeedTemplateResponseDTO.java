@@ -15,6 +15,7 @@ public class FeedTemplateResponseDTO {
 	public Long productcatgeoryID;
 	public Long quantitycategoryid;
 	public String productName;
+	public String productcatgeoryName;
 	public String priceperqty;
 	public String productqty;
 	public String quantity;

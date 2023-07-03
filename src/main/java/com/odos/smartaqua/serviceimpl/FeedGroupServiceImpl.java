@@ -182,11 +182,6 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 
 	public ResponseEntity<ResponseDTO> feedFeedListbyDate(Long userid, Long cultureId, String feedDate, String type) {
 		ResponseDTO responseDTO = new ResponseDTO();
-
-		System.out.println("====="+userid);
-		System.out.println("====="+cultureId);
-		System.out.println("====="+feedDate);
-		System.out.println("====="+type);
 		try {
 			List<FeedGroupResDTO> templatedtolist = new ArrayList<>();
 			List<FeedGroup> feedGroupsList;
@@ -197,14 +192,13 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 			}
 
 			List<FeedTemplateResponseDTO> feedProductsList;
-			List<FeedTemplateResponseDTO> supplimentsList;
 
 			for (int i = 0; i < feedGroupsList.size(); i++) {
 
 				FeedGroup feedgroup = (FeedGroup) feedGroupsList.get(i);
 
 				List<FeedTemplate> feedTemplatesList = feedTemplateRepository
-						.findListByProductCatgory(feedgroup.getFeedgroupid(), new Long(1));
+						.findfeedgroupById(feedgroup.getFeedgroupid());
 				feedProductsList = new ArrayList<>();
 				for (int j = 0; j < feedTemplatesList.size(); j++) {
 					FeedTemplate feedtempalte = (FeedTemplate) feedTemplatesList.get(j);
@@ -213,32 +207,16 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 					feedtemplatedto.setProductID(feedtempalte.getProduct().getProductid());
 					feedtemplatedto.setProductName(feedtempalte.getProduct().getProductname());
 					feedtemplatedto.setProductcatgeoryID(feedtempalte.getProductcategory().getProductcatgeoryid());
+					feedtemplatedto.setProductcatgeoryName(feedtempalte.getProductcategory().getName());
 					feedtemplatedto.setQuantitycategoryid(feedtempalte.getQuantitycategories().getQuantitycategoryid());
 					feedtemplatedto.setQuantity(feedtempalte.getQuantitycategories().getQtycategory());
 					feedtemplatedto.setComments(feedtempalte.getFeedgroup().getComment());
 					feedProductsList.add(feedtemplatedto);
 				}
-
-				List<FeedTemplate> supplimentTemplatesList = feedTemplateRepository
-						.findListByProductCatgory(feedgroup.getFeedgroupid(), new Long(2));
-				supplimentsList = new ArrayList<>();
-				for (int k = 0; k < supplimentTemplatesList.size(); k++) {
-					FeedTemplate supplimenttempalte = (FeedTemplate) supplimentTemplatesList.get(k);
-					FeedTemplateResponseDTO supplimentsDTO = new FeedTemplateResponseDTO();
-					BeanUtils.copyProperties(supplimenttempalte, supplimentsDTO);
-					supplimentsDTO.setProductID(supplimenttempalte.getProduct().getProductid());
-					supplimentsDTO.setProductName(supplimenttempalte.getProduct().getProductname());
-					supplimentsDTO.setProductcatgeoryID(supplimenttempalte.getProductcategory().getProductcatgeoryid());
-					supplimentsDTO
-							.setQuantitycategoryid(supplimenttempalte.getQuantitycategories().getQuantitycategoryid());
-					supplimentsDTO.setQuantity(supplimenttempalte.getQuantitycategories().getQtycategory());
-					supplimentsDTO.setComments(supplimenttempalte.getFeedgroup().getComment());
-					supplimentsList.add(supplimentsDTO);
-				}
-
+				
 				FeedGroupResDTO feedgroupdto = new FeedGroupResDTO(feedgroup.getFeedgroupid(),
 						feedgroup.getUser().getUserid(), feedgroup.getGroupname(), feedgroup.getFeeddate(),
-						feedProductsList, supplimentsList);
+						feedProductsList);
 				templatedtolist.add(feedgroupdto);
 			}
 
